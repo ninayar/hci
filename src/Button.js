@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ExampleChat from './Chat';
+import MoviePedia from './MoviePedia';
+import Chat from './Chat';
 import { FloatingMenu, MainButton, ChildButton } from 'react-floating-button-menu';
 import MdAdd from 'react-icons/lib/md/add';
 import MdClose from 'react-icons/lib/md/close';
@@ -42,15 +43,21 @@ class Button extends Component {
   // <a href="#top-section" className="btn-floating btn-large red" onClick={this.openModal.bind(this)}>
   //     <i className="fa fa-arrow-up"></i>
   // </a>
+
+
       <div>
-      <button onClick={this.openModal.bind(this)}>Chat</button>
-        {this.state.modalActive ?
-          <div className='modalDialog'>
-            <a title='Close' onClick={this.closeModal.bind(this)}>X</a>
-            <ExampleChat/>
-          </div>
-          :null
-        }
+      <div className="Collapse" id="ChatBox">
+      {this.state.modalActive ?
+        <div className='modalDialog'>
+          <a title='Close' onClick={this.closeModal.bind(this)}>X Close</a>
+          <Chat/>
+        </div>
+        :null
+      }
+      </div>
+      <button className="btn btn-primary" href="#ChatBox" type="button" onClick={this.openModal.bind(this)} data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      ChatNow
+      </button>
       </div>
     )
   }
