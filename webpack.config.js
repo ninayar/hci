@@ -1,5 +1,5 @@
 const path = require('path');
- 
+
 module.exports = {
   context: path.join(__dirname, 'src'),
   entry: [
@@ -14,9 +14,11 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: [
-          'babel-loader',
-        ],
+        loader: "babel-loader",
+        query: {
+  // plugins: ["transform-class-properties"],
+      presets: [ 'react','es2015','stage-2']
+        }
       },
     ],
   },
