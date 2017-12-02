@@ -14,12 +14,20 @@
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-preset-latest": "^6.24.1",
+    "bootstrap": "^4.0.0-beta.2",
     "express": "^4.16.2",
+    "jquery": "^3.2.1",
+    "jquery.easing": "^1.4.1",
     "react": "^16.1.1",
     "react-addons-pure-render-mixin": "^15.6.2",
+    "react-bootstrap": "^0.31.5",
     "react-buttons": "0.0.11",
     "react-dom": "^16.1.1",
+    "react-floating-button-menu": "^1.0.8",
+    "react-icons": "^2.2.7",
+    "react-mfb": "^0.6.0",
     "react-simple-chatbot": "^0.2.9",
+    "startbootstrap-scrolling-nav": "^4.0.0-beta",
     "webpack-dev-middleware": "^1.12.2"
   },
   "devDependencies": {
@@ -32,6 +40,8 @@
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
     "webpack": "^3.9.1",
-    "webpack-dev-server": "^2.9.5"
+    "webpack-dev-server": "^2.9.5",
+    "browser-sync": "2.18.13",
+    "gulp": "^3.9.1"
   }
 }

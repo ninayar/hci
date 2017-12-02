@@ -1,34 +1,28 @@
-import React, { Component } from 'react';
+import React, { Component,PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import PureRenderMixin from 'react-addons-pure-render-mixin';
+// import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-import { Button, IconButton, HamburgerButton, FloatingButton, FlatButton } from 'react-buttons';
+import { FloatingButton } from 'react-buttons';
 
 class Example extends Component {
   constructor(props) {
     super(props);
+    // this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+    this.onClick = this.handleClick.bind(this);
+  }
 
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+  handleClick(event) {
+    const {id} = event.target;
+    console.log(id);
   }
 
   render() {
     return (
       <div>
-        <Button faIcon="plus" onClick={/* sommething */}>New Thing</Button>
-        <Button materialIcon="favorite" iconBefore={true} onClick={/* sommething */}>Favorite</Button>
-
-        <IconButton faIcon="plus" label="Add a new thing" onClick={/* something */} />
-        <IconButton materialIcon="favorite" label="Add this as a favorite" onClick={/* something */} />
-
-        <HamburgerButton active={false} size="lg" onClick={/* something */} />
-        <HamburgerButton active={this.props.btnActive} onClick={/* toggle */} />
-
-        <FlatButton color="primary" onClick={/* something */} />
-
-        <FloatingButton faIcon="plus" label="Add a new thing" onClick={/* something */} />
+        <FloatingButton faIcon="plus" label= "blah" id="1" onClick={this.onClick}/>
       </div>
     )
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById('app'));
+export default Example;
