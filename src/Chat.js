@@ -11,39 +11,94 @@ class Summary extends Component{
       movieName: '',
       customerName: '',
       zip: '',
-      result: 'error'
-
+      result: 'error',
+      Title: 'error',
+      Actors: 'error',
+      Plot: 'error',
+      Poster: 'error',
+      Imdb: 'error',
+      Released: 'error'
     };
   }
 
   componentWillMount() {
+    const self=this;
     const { steps } = this.props;
-    const { movieName,customerName,zip,result} = steps;
+    const { movieName,customerName,zip } = steps;
 
     const search = movieName.value;
     console.log(search);
-    const url = `http://www.omdbapi.com/?apikey=cc75c508&s=${search}`;
+    const url = `http://www.omdbapi.com/?apikey=cc75c508&t=${search}`;
     console.log(url);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (xhttp.readyState == 4) {
       const data = JSON.parse(this.responseText);
       console.log(data);
+      if (data.Response=="True") {
+        console.log(data.Poster);
+
+        self.setState({ movieName,customerName,zip,result: "True", Title: data.Title,  Actors: data.Actors,
+              Plot: data.Plot,Poster: data.Poster,Imdb: data.imdbRating,Released: data.Released});
+      }
+      else{
+        self.setState({ movieName,customerName,zip,result: 'Not Found',Title: 'Not Found',  Actors: 'Not Found',
+              Plot: 'Not Found',Poster: 'Not Found',Imdb: 'Not Found',Released: 'Not Found'});
+      }
     }
     };
     xhttp.open("GET", url, true);
     xhttp.send();
-    this.setState({ movieName,customerName,zip,result});
   }
 
   render(){
-    const {movieName,customerName,zip,result} = this.state;
+    const {movieName,customerName,zip,result,Title,Actors,Plot,Poster,Imdb,Released} = this.state;
+    const PosterURL = {Poster};
+    console.log({PosterURL})
 
     return(
-      <div style = {{width: '100%'}}>
+      <div>
         <p> Details: <br/> {customerName.value} , {zip.value}</p>
         <h4>Movie Deatils</h4>
-        <p>{result.value}</p>
+       { this.state.result ?
+
+        <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th className="span2">Items</th>
+            <th className="span2">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th scope="row">Title</th>
+          <td>{Title}</td>
+        </tr>
+        <tr>
+          <th scope="row">Actors</th>
+          <td>{Actors}</td>
+        </tr>
+        <tr>
+          <th scope="row">Plot</th>
+          <td>{Plot}</td>
+        </tr>
+        <tr>
+          <th scope="row">Released</th>
+          <td>{Released}</td>
+        </tr>
+        <tr>
+          <th scope="row">Imdb Ratings</th>
+          <td>{Imdb}</td>
+        </tr>
+        <tr>
+          <th scope="row">Poster</th>
+          <td><img src='url(${PosterURL})'/></td>
+        </tr>
+      </tbody>
+        </table>
+      :
+        <p>No results.Try Again</p>
+      }
       </div>
     );
   }
@@ -183,7 +238,6 @@ class Chat extends Component {
       {
         id: '13',
         component: <Summary />,
-        waitAction: true,
         trigger: '19',
       },
       {
@@ -194,10 +248,16 @@ class Chat extends Component {
       {
      id: '20',
      options: [
-       { value: 1, label: 'Yes', trigger: '13' },
+       { value: 1, label: 'Yes', trigger: '21' },
        { value: 2, label: 'No', trigger: '12' },
      ],
      },
+     {
+       id: '21',
+       message: 'Lets call it a day for now.',
+       end: true,
+     },
+
       ]}
       />
 
