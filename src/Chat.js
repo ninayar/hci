@@ -90,10 +90,6 @@ class Summary extends Component{
           <th scope="row">Imdb Ratings</th>
           <td>{Imdb}</td>
         </tr>
-        <tr>
-          <th scope="row">Poster</th>
-          <td><img src='url(${PosterURL})'/></td>
-        </tr>
       </tbody>
         </table>
       :
@@ -116,22 +112,47 @@ class NearBy extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      zip: ''
+      zip: '',
+      showtimes: 'error'
 
     };
   }
 
   componentWillMount() {
+    const self = this;
     const { steps } = this.props;
     const { zip } = steps;
-    this.setState({zip});
+    const search = zip.value;
+    console.log(search);
+    const nearUrl =  `http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-12-03&api_key=bdyduv2xctgvynxd79b9jfu8&zip=${search}`;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4) {
+      const data = this.responseText;
+      console.log(data);
+
+      if (data) {
+        console.log(data[0]);
+
+        self.setState({ zip, showtimes: 'set' });
+      }
+      else{
+        self.setState({ zip, showtimes: 'not set' });
+
+      }
+    }
+    };
+    xhttp.open("GET", nearUrl, true);
+    xhttp.send();
   }
 
   render(){
-    const {zip} = this.state;
+    const {zip, showtimes} = this.state;
     return(
       <div style = {{width: '100%'}}>
         <p> Details: {zip.value}</p>
+        <p> Details: {showtimes}</p>
+
       </div>
     );
   }
