@@ -17,67 +17,67 @@ class Movie extends React.Component {
               </div>
                <div className="row text-center text-lg-left">
               <div className="col-lg-3 col-md-4 col-xs-6">
-              <figure class="figure">
+              <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
                   <img className="img-fluid img-thumbnail" src="img/1.jpg" alt=""/>
                 </a>
-                <figcaption class="figure-caption text-center lead">Starwars : Last Jedi</figcaption>
+                <figcaption className="figure-caption text-center lead">Starwars : Last Jedi</figcaption>
                 </figure>
               </div>
               <div className="col-lg-3 col-md-4 col-xs-6">
-              <figure class="figure">
+              <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
                   <img className="img-fluid img-thumbnail" src="img/2.jpg" alt=""/>
                 </a>
-                <figcaption class="figure-caption text-center lead">Justice League(2017)</figcaption>
+                <figcaption className="figure-caption text-center lead">Justice League(2017)</figcaption>
                 </figure>
               </div>
               <div className="col-lg-3 col-md-4 col-xs-6">
-              <figure class="figure">
+              <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
                   <img className="img-fluid img-thumbnail" src="img/3.jpg" alt=""/>
                 </a>
-                <figcaption class="figure-caption text-center lead">Thor : Ragnarok</figcaption>
+                <figcaption className="figure-caption text-center lead">Thor : Ragnarok</figcaption>
                 </figure>
               </div>
               <div className="col-lg-3 col-md-4 col-xs-6">
-              <figure class="figure">
+              <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
                   <img className="img-fluid img-thumbnail" src="img/4.jpg" alt=""/>
                 </a>
-                <figcaption class="figure-caption text-center lead">Coco</figcaption>
+                <figcaption className="figure-caption text-center lead">Coco</figcaption>
                 </figure>
               </div>
               <div className="col-lg-3 col-md-4 col-xs-6">
-              <figure class="figure">
+              <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
                   <img className="img-fluid img-thumbnail" src="img/5.jpg" alt=""/>
                 </a>
-                <figcaption class="figure-caption text-center lead">War of the Planet of Apes</figcaption>
+                <figcaption className="figure-caption text-center lead">War of the Planet of Apes</figcaption>
                 </figure>
               </div>
               <div className="col-lg-3 col-md-4 col-xs-6">
-              <figure class="figure">
+              <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
                   <img className="img-fluid img-thumbnail" src="img/6.jpg" alt=""/>
                 </a>
-                <figcaption class="figure-caption text-center lead">Murder on the Oriet Express</figcaption>
+                <figcaption className="figure-caption text-center lead">Murder on the Oriet Express</figcaption>
                 </figure>
               </div>
               <div className="col-lg-3 col-md-4 col-xs-6">
-              <figure class="figure">
+              <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
                   <img className="img-fluid img-thumbnail" src="img/7.jpg" alt=""/>
                 </a>
-                <figcaption class="figure-caption text-center lead">Wonder</figcaption>
+                <figcaption className="figure-caption text-center lead">Wonder</figcaption>
                 </figure>
               </div>
               <div className="col-lg-3 col-md-4 col-xs-6">
-              <figure class="figure">
+              <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
                   <img className="img-fluid img-thumbnail" src="img/8.jpg" alt=""/>
                 </a>
-                <figcaption class="figure-caption text-center lead">Jumanji : Welcome to the Jungle</figcaption>
+                <figcaption className="figure-caption text-center lead">Jumanji : Welcome to the Jungle</figcaption>
                 </figure>
               </div>
           		</div>
