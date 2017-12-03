@@ -6,7 +6,7 @@ class Footer extends React.Component {
   render() {
     return (
       <div>
-      <footer className="py-5 bg-dark">
+      <footer className="py-5 bg-info">
         <div className="container">
           <p className="m-0 text-center text-white">Copyright &copy; MovieTix 2017</p>
         </div>
