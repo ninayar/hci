@@ -7,20 +7,20 @@ import Header from './component/Header.js';
 import Movie from './component/Movie.js';
 import Contact from './component/Contact.js';
 import Footer from './component/Footer.js';
-import Event from './component/Event.js';
+import MovieEvents from './component/MovieEvents.js';
 
 class App extends React.Component {
   render () {
     return(
       <div>
-          <Nav/>
-          <Header/>
-          <Movie/>
-          <Event/>
-          <Contact/>
-          <Footer/>
-        </div>
-        )
+        <Nav />
+        <Header />
+        <Movie />
+        <MovieEvents />
+        <Contact />
+        <Footer />
+      </div>
+    )
   }
 }
 
