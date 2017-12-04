@@ -1,26 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Chat from './Chat';
-import Button from './Button';
-import Nav from './Nav';
-import Header from './Header';
-import Movie from './Movie';
-import Contact from './Contact';
-import Footer from './Footer';
-import Event from './Event';
+import Chat from './component/Chat.js';
+import Button from './component/Button.js';
+import Nav from './component/Nav.js';
+import Header from './component/Header.js';
+import Movie from './component/Movie.js';
+import Contact from './component/Contact.js';
+import Footer from './component/Footer.js';
+import MovieEvents from './component/MovieEvents.js';
 
 class App extends React.Component {
   render () {
     return(
       <div>
-        <Nav/>
-        <Header/>
-        <Movie/>
-        <Event/>
-          <Contact/>
-          <Footer/>
-          </div>
-        )
+        <Nav />
+        <Header />
+        <Movie />
+        <MovieEvents />
+        <Contact />
+        <Footer />
+      </div>
+    )
   }
 }
 

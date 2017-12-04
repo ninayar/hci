@@ -19,7 +19,7 @@ class Movie extends React.Component {
               <div className="col-lg-3 col-md-4 col-xs-6">
               <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
-                  <img className="img-fluid img-thumbnail" src="img/1.jpg" alt=""/>
+                  <img className="img-fluid img-thumbnail" src="src/img/1.jpg" alt=""/>
                 </a>
                 <figcaption className="figure-caption text-center lead">Starwars : Last Jedi</figcaption>
                 </figure>
@@ -27,7 +27,7 @@ class Movie extends React.Component {
               <div className="col-lg-3 col-md-4 col-xs-6">
               <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
-                  <img className="img-fluid img-thumbnail" src="img/2.jpg" alt=""/>
+                  <img className="img-fluid img-thumbnail" src="src/img/2.jpg" alt=""/>
                 </a>
                 <figcaption className="figure-caption text-center lead">Justice League(2017)</figcaption>
                 </figure>
@@ -35,7 +35,7 @@ class Movie extends React.Component {
               <div className="col-lg-3 col-md-4 col-xs-6">
               <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
-                  <img className="img-fluid img-thumbnail" src="img/3.jpg" alt=""/>
+                  <img className="img-fluid img-thumbnail" src="src/img/3.jpg" alt=""/>
                 </a>
                 <figcaption className="figure-caption text-center lead">Thor : Ragnarok</figcaption>
                 </figure>
@@ -43,7 +43,7 @@ class Movie extends React.Component {
               <div className="col-lg-3 col-md-4 col-xs-6">
               <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
-                  <img className="img-fluid img-thumbnail" src="img/4.jpg" alt=""/>
+                  <img className="img-fluid img-thumbnail" src="src/img/4.jpg" alt=""/>
                 </a>
                 <figcaption className="figure-caption text-center lead">Coco</figcaption>
                 </figure>
@@ -51,7 +51,7 @@ class Movie extends React.Component {
               <div className="col-lg-3 col-md-4 col-xs-6">
               <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
-                  <img className="img-fluid img-thumbnail" src="img/5.jpg" alt=""/>
+                  <img className="img-fluid img-thumbnail" src="src/img/5.jpg" alt=""/>
                 </a>
                 <figcaption className="figure-caption text-center lead">War of the Planet of Apes</figcaption>
                 </figure>
@@ -59,7 +59,7 @@ class Movie extends React.Component {
               <div className="col-lg-3 col-md-4 col-xs-6">
               <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
-                  <img className="img-fluid img-thumbnail" src="img/6.jpg" alt=""/>
+                  <img className="img-fluid img-thumbnail" src="src/img/6.jpg" alt=""/>
                 </a>
                 <figcaption className="figure-caption text-center lead">Murder on the Oriet Express</figcaption>
                 </figure>
@@ -67,7 +67,7 @@ class Movie extends React.Component {
               <div className="col-lg-3 col-md-4 col-xs-6">
               <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
-                  <img className="img-fluid img-thumbnail" src="img/7.jpg" alt=""/>
+                  <img className="img-fluid img-thumbnail" src="src/img/7.jpg" alt=""/>
                 </a>
                 <figcaption className="figure-caption text-center lead">Wonder</figcaption>
                 </figure>
@@ -75,7 +75,7 @@ class Movie extends React.Component {
               <div className="col-lg-3 col-md-4 col-xs-6">
               <figure className="figure">
                 <a href="#" className="d-block mb-4 h-100">
-                  <img className="img-fluid img-thumbnail" src="img/8.jpg" alt=""/>
+                  <img className="img-fluid img-thumbnail" src="src/img/8.jpg" alt=""/>
                 </a>
                 <figcaption className="figure-caption text-center lead">Jumanji : Welcome to the Jungle</figcaption>
                 </figure>
