@@ -304,6 +304,44 @@ NearBy.propTypes = {
 NearBy.defaultProps = {
   steps: undefined,
 };
+class BuyTicket extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      movieTitle: '',
+      zip: '',
+      result: 'error',
+    };
+  }
+
+  componentWillMount() {
+    const self=this;
+    const { steps } = this.props;
+    const { movieName,zip } = steps;
+    this.setState({ movieName,zip });
+  }
+
+  render(){
+    const {movieTitle,zip} = this.state;
+    console.log("rener 1")
+    return(
+      <div>
+        <p> Details: <br/> {zip.value}</p>
+        <h4>Show Deatils</h4>
+        <p>We wanted to help you buy it. But, no api is for free that supports this feature</p>
+        <p>Check out: <a href="https://www.moviefone.com/showtimes/"  target="_blank">link</a></p>
+      </div>
+    );
+  }
+}
+
+BuyTicket.propTypes = {
+  steps: PropTypes.object,
+};
+
+BuyTicket.defaultProps = {
+  steps: undefined,
+};
 
 
 class Chat extends Component {
@@ -355,6 +393,7 @@ class Chat extends Component {
            { value: 1, label: 'Look up Movie Details', trigger: '7' },
            { value: 2, label: 'Look up movies near by', trigger: 'Near1' },
            { value: 3, label: 'Watch movie trailers', trigger: '6' },
+           { value: 4, label: 'Buy Tickets', trigger: '23' },
          ],
        },
 
@@ -426,10 +465,41 @@ class Chat extends Component {
      },
      {
        id: '21',
-       message: 'Lets call it a day for now.',
-       end: true,
+       message: 'Lets go back to the menu options',
+       trigger: 6,
      },
-
+     {
+       id: '23',
+       message: 'Lets buy you those tickets.',
+       trigger: 24,
+     },
+     {
+       id: '24',
+       message: 'What is the movie you want to look up?',
+       trigger: 'movieTitle',
+     },
+     {
+       id: 'movieTitle',
+       user: true,
+       trigger: '25',
+     },
+     {
+       id: '25',
+       component: <BuyTicket />,
+       trigger: '26',
+     },
+     {
+       id: '26',
+       message: 'Is this what you wanted?',
+       trigger: '27',
+     },
+     {
+    id: '27',
+    options: [
+      { value: 1, label: 'Yes', end: true },
+      { value: 2, label: 'No', trigger: '6' },
+    ],
+    },
       ]}
       />
 
