@@ -2,16 +2,15 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ChatBot,{ Loading } from 'react-simple-chatbot';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom'
 import {fetchJsonp} from 'fetch-jsonp'
 
-class Summary extends Component{
+export class Summary extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      movieName: '',
-      customerName: '',
-      zip: '',
+      movieName: props.movieName,
+      customerName: props.customerName,
+      zip: props.zip,
       result: 'error',
       Title: 'error',
       Actors: 'error',
@@ -24,44 +23,45 @@ class Summary extends Component{
 
   componentWillMount() {
     const self=this;
+    var search = '';
     const { steps } = this.props;
-    const { movieName,customerName,zip } = steps;
-
-    const search = movieName.value;
+    if(typeof(steps) != 'undefined'){
+      const { movieName,customerName,zip } = steps;
+      console.log("here")
+      search = movieName.value;
+    }
+    else{
+      console.log("no i am here")
+      search = this.state.movieName;
+      }
     console.log(search);
     const url = `http://www.omdbapi.com/?apikey=cc75c508&t=${search}`;
-    console.log(url);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (xhttp.readyState == 4) {
       const data = JSON.parse(this.responseText);
-      console.log(data);
       if (data.Response=="True") {
-        console.log(data.Poster);
-
-        self.setState({ movieName,customerName,zip,result: "True", Title: data.Title,  Actors: data.Actors,
+        self.setState({result: "True", Title: data.Title,  Actors: data.Actors,
               Plot: data.Plot,Poster: data.Poster,Imdb: data.imdbRating,Released: data.Released});
       }
       else{
-        self.setState({ movieName,customerName,zip,result: 'Not Found',Title: 'Not Found',  Actors: 'Not Found',
+        self.setState({ result: 'Not Found',
+              Title: 'Not Found',  Actors: 'Not Found',
               Plot: 'Not Found',Poster: 'Not Found',Imdb: 'Not Found',Released: 'Not Found'});
       }
     }
     };
     xhttp.open("GET", url, true);
     xhttp.send();
+    this.setState(self);
   }
 
   render(){
     const {movieName,customerName,zip,result,Title,Actors,Plot,Poster,Imdb,Released} = this.state;
-    const PosterURL = {Poster};
-    console.log({PosterURL})
-
     return(
-      <div>
-        <p> Details: <br/> {customerName.value} , {zip.value}</p>
+      <div style={{width: '100%'} }>
         <h4>Movie Deatils</h4>
-       { this.state.result ?
+       { result=='True' ?
 
         <table className="table table-bordered">
         <thead>
@@ -114,12 +114,12 @@ class NearBy extends Component{
     super(props);
     this.state = {
       zip: '',
-      date: 'error',
-      data0 : {title: 'error', showtimes: { dateTime: 'error', theatre: 'error'}},
-      data1 : {title: 'error', showtimes: { dateTime: 'error', theatre: 'error'}},
-      data2 : {title: 'error', showtimes: { dateTime: 'error', theatre: 'error'}},
-      data3 : {title: 'error', showtimes: { dateTime: 'error', theatre: 'error'}},
-      data4 : {title: 'error', showtimes: { dateTime: 'error', theatre: 'error'}},
+      date: 'loading',
+      data0 : {title: 'loading', showtimes: { dateTime: 'loading', theatre: 'loading'}},
+      data1 : {title: 'loading', showtimes: { dateTime: 'loading', theatre: 'loading'}},
+      data2 : {title: 'loading', showtimes: { dateTime: 'loading', theatre: 'loading'}},
+      data3 : {title: 'loading', showtimes: { dateTime: 'loading', theatre: 'loading'}},
+      data4 : {title: 'loading', showtimes: { dateTime: 'loading', theatre: 'loading'}},
 
     };
   }
@@ -135,15 +135,12 @@ class NearBy extends Component{
     const search = zip.value;
     console.log(search);
     var utc = new Date().toJSON().slice(0, 10).replace(/-/g, '-');
-    console.log(utc);
-
     const nearUrl = `http://data.tmsapi.com/v1.1/movies/showings?startDate=${utc}&api_key=bdyduv2xctgvynxd79b9jfu8&zip=${search}`;
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (xhttp.readyState == 4) {
         const length = this.responseText.length;
-        console.log(length);
         var data = {}
         var alldata = [];
         for (var i = 0; i < 5; i++) {
@@ -189,7 +186,6 @@ class NearBy extends Component{
 
   render(){
     const {zip,date} = this.state;
-    console.log("in render");
     var showtimes0=[];
     for(var i=0; i<this.state.data0.showtimes.length;i++)
     {
@@ -310,6 +306,8 @@ class BuyTicket extends Component{
     this.state = {
       movieTitle: '',
       zip: '',
+      theatre: '',
+      customerName: '',
       result: 'error',
     };
   }
@@ -317,20 +315,28 @@ class BuyTicket extends Component{
   componentWillMount() {
     const self=this;
     const { steps } = this.props;
-    const { movieName,zip } = steps;
-    this.setState({ movieName,zip });
+    const { movieTitle,zip,theatre,customerName } = steps;
+    this.setState({ movieTitle,zip,theatre,customerName });
   }
 
   render(){
-    const {movieTitle,zip} = this.state;
-    console.log("rener 1")
+    const {movieTitle,zip,theatre,customerName} = this.state;
     return(
       <div>
-        <p> Details: <br/> {zip.value}</p>
-        <h4>Show Deatils</h4>
+        <h4>Ticket Deatils</h4>
+        <p>Customer: {customerName.value}<br/>Zip: {zip.value}</p>
+        <p> Movie: {movieTitle.value} <br/> Theater: {theatre.value} </p>
         <p>We wanted to help you buy it. But, no api is for free that supports this feature</p>
-        <p>Check out: <a href="https://www.moviefone.com/showtimes/"  target="_blank">link</a></p>
-      </div>
+
+        <p>Check out:</p>
+        <ul className="list-group">
+          <li className="list-group-item"><a href="https://www.moviefone.com/showtimes/"  target="_blank">MovieFone</a></li>
+          <li className="list-group-item"><a href="https://www.movietickets.com/"  target="_blank">MovieTieckets</a></li>
+          <li className="list-group-item"><a href="https://www.fandango.com/?cmp=KNC_SP_Google_Main_Gen-Top-Volume-Ticket-Keywords-ABM&refcd=43700025389633112_%7cpkw%7c%2Bbuy+%2Bmovie+%2Btickets_matchtypeb&gclid=CjwKCAiAx57RBRBkEiwA8yZdUGlTnqY-Zza1VrPsv3E9hL3Damu50tNACNRoTAwN1jFgi8faoXUKCxoC40wQAvD_BwE&gclsrc=aw.ds"
+           target="_blank">Fandago</a></li>
+          <li className="list-group-item"><a href="https://www.atomtickets.com/"  target="_blank">Atom</a></li>
+        </ul>
+    </div>
     );
   }
 }
@@ -342,7 +348,6 @@ BuyTicket.propTypes = {
 BuyTicket.defaultProps = {
   steps: undefined,
 };
-
 
 class Chat extends Component {
 
@@ -470,7 +475,12 @@ class Chat extends Component {
      },
      {
        id: '23',
-       message: 'Lets buy you those tickets.',
+       message: 'Lets help buy you those tickets.',
+       trigger: 'info',
+     },
+     {
+       id: 'info',
+       message: 'First look up details of the movie you want to see and check the near by shows.',
        trigger: 24,
      },
      {
@@ -480,6 +490,16 @@ class Chat extends Component {
      },
      {
        id: 'movieTitle',
+       user: true,
+       trigger: 'theatre-question',
+     },
+     {
+       id: 'theatre-question',
+       message: 'What is the theater you want to buy the ticket in?',
+       trigger: 'theatre',
+     },
+     {
+       id: 'theatre',
        user: true,
        trigger: '25',
      },
@@ -496,9 +516,14 @@ class Chat extends Component {
      {
     id: '27',
     options: [
-      { value: 1, label: 'Yes', end: true },
+      { value: 1, label: 'Yes', trigger: '28' },
       { value: 2, label: 'No', trigger: '6' },
     ],
+    },
+    {
+      id: '28',
+      message: 'Thats all folks. Signing out.',
+      end: true,
     },
       ]}
       />

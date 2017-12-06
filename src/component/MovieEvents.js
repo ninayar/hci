@@ -28,13 +28,13 @@ class MovieEvents extends React.Component {
   renderMovies(){
     var renderMoviesJSX = this.movieList.map(function (movieListInner, index) {
       return(
-        <div style={{marginBottom:'30px'}}>
-          <div style={{marginBottom:'10px',fontWeight:'bolder',fontSize:'16px'}}>{movieListInner.title}</div>
+        <div style={{marginBottom:'30px'}}  key={"div"+index}>
+          <div style={{marginBottom:'10px',fontWeight:'bolder',fontSize:'16px'}} key={"title"+index}>{movieListInner.title}</div>
             <div style={{display:'flex', flexWrap:'wrap'}} key={index}>
             {
-              movieListInner.movieArray.map(function (category) {
+              movieListInner.movieArray.map(function (category,no) {
                 return(
-                  <div className="root" >
+                  <div className="root" key={"ct"+no}>
                       <div className="container">
                         <div className="image_container">
                           <img src={category.poster} alt="alternate" className="image" />
@@ -60,7 +60,7 @@ class MovieEvents extends React.Component {
       );
   }.bind(this));
   return(
-      <div style={{width:'850px'}}>
+      <div style={{width:'100%'}}>
           {renderMoviesJSX}
       </div>
     );
