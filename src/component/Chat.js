@@ -114,87 +114,183 @@ class NearBy extends Component{
     super(props);
     this.state = {
       zip: '',
-      length: 'error',
-      data0 : {title: 'error', showtimes: ['error']},
-      data1 : ['error'],
-      data2 : ['error'],
-      data3 : ['error'],
-      data4 : ['error'],
+      date: 'error',
+      data0 : {title: 'error', showtimes: { dateTime: 'error', theatre: 'error'}},
+      data1 : {title: 'error', showtimes: { dateTime: 'error', theatre: 'error'}},
+      data2 : {title: 'error', showtimes: { dateTime: 'error', theatre: 'error'}},
+      data3 : {title: 'error', showtimes: { dateTime: 'error', theatre: 'error'}},
+      data4 : {title: 'error', showtimes: { dateTime: 'error', theatre: 'error'}},
+
     };
   }
 
   componentWillMount() {
     const self = this;
-    const { steps } = this.props;
-    const { zip } = steps;
+    const {
+      steps
+    } = this.props;
+    const {
+      zip
+    } = steps;
     const search = zip.value;
     console.log(search);
-    const nearUrl =  `http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-12-05&api_key=bdyduv2xctgvynxd79b9jfu8&zip=${search}`;
+    var utc = new Date().toJSON().slice(0, 10).replace(/-/g, '-');
+    console.log(utc);
 
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-  if (xhttp.readyState == 4) {
-    const length =this.responseText.length;
-    console.log(length);
-    var indents = [];
-    for (var i = 0; i < 5; i++) {
-      indents.push(JSON.parse(this.responseText)[i]);
-    }
-    var data = indents ;
+    const nearUrl = `http://data.tmsapi.com/v1.1/movies/showings?startDate=${utc}&api_key=bdyduv2xctgvynxd79b9jfu8&zip=${search}`;
 
-    console.log(data[0].showtimes);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState == 4) {
+        const length = this.responseText.length;
+        console.log(length);
+        var data = {}
+        var alldata = [];
+        for (var i = 0; i < 5; i++) {
+          data = JSON.parse(this.responseText)[i];
+          if (data) {
+            var showtimes = [];
+            for (var j = 0; j < data.showtimes.length; j++) {
+              showtimes.push({
+                dateTime: data.showtimes[j].dateTime,
+                theatre: data.showtimes[j].theatre.name
+              })
+            }
+            data = {
+              title: data.title,
+              showtimes: showtimes
+            }
+            alldata.push(data);
+          }
 
-    if (data) {
-      self.setState({ zip, length: length, data0: {title: data[0].title, showtimes: [data[0].showtimes]},
-        data1:data[1], data2: data[2], data3:data[3], data4:data[4] });
-    }
-    else{
-      self.setState({ zip, length: 'n/A' });
+        }
+        if (data) {
+          self.setState({
+            zip,
+            date: utc,
+            data0: alldata[0],
+            data1: alldata[1],
+            data2: alldata[2],
+            data3: alldata[3],
+            data4: alldata[4]
+          });
+        } else {
+          self.setState({
+            zip,
+            date: 'n/A'
+          });
 
-    }
-  }
-  };
-  xhttp.open("GET", nearUrl);
-  xhttp.send();
+        }
+      }
+    };
+    xhttp.open("GET", nearUrl);
+    xhttp.send();
   }
 
   render(){
-    const {zip} = this.state;
+    const {zip,date} = this.state;
     console.log("in render");
     var showtimes0=[];
     for(var i=0; i<this.state.data0.showtimes.length;i++)
     {
       showtimes0.push(this.state.data0.showtimes[i]);
     }
-
+    var showtimes1=[];
+    for(var i=0; i<this.state.data1.showtimes.length;i++)
+    {
+      showtimes1.push(this.state.data1.showtimes[i]);
+    }
+    var showtimes2=[];
+    for(var i=0; i<this.state.data2.showtimes.length;i++)
+    {
+      showtimes2.push(this.state.data2.showtimes[i]);
+    }
+    var showtimes3=[];
+    for(var i=0; i<this.state.data3.showtimes.length;i++)
+    {
+      showtimes3.push(this.state.data3.showtimes[i]);
+    }
+    var showtimes4=[];
+    for(var i=0; i<this.state.data4.showtimes.length;i++)
+    {
+      showtimes4.push(this.state.data4.showtimes[i]);
+    }
+    var i=0,index=0;
     return(
-
       <div style={{width: '100%'} }>
         <p>
           Details: {zip.value}</p>
         <p>
-          Number of Movies : {length}</p>
+          Date : {date}</p>
         <div>
           <p>Theaters: The top 5 are shown</p>
-          <table classname="table table-bordered">
-            <tbody>
+          <table className="table table-bordered">
+            <thead>
               <tr>
-                <td>{this.state.data0.title}</td>
+              <th>{this.state.data0.title}</th>
               </tr>
+            </thead>
+            <tbody>
+              { showtimes0.map((item, i) => (
+              <tr key={'row0'+i}>
+                <td key={'Name0'+i}>{item.theatre}</td>
+                <td key={'Time0'+i}>{item.dateTime.slice(-5)}</td>
+              </tr>
+              )) }
+            </tbody>
+            <thead>
               <tr>
-              <td>
-              {
-
-                showtimes0.map((item) => (
-                  <td key={index}>[item]</td>
-              ))
-
-            }
-          </td>
-          </tr>
-        </tbody>
-      </table>
-
+              <th>{this.state.data1.title}</th>
+              </tr>
+            </thead>
+            <tbody>
+              { showtimes1.map((item, index) => (
+              <tr key={'row1'+index}>
+                <td key={'Name1'+index}>{item.theatre}</td>
+                <td key={'Time1'+index}>{item.dateTime.slice(-5)}</td>
+              </tr>
+              )) }
+            </tbody>
+            <thead>
+              <tr>
+              <th>{this.state.data2.title}</th>
+              </tr>
+            </thead>
+            <tbody>
+              { showtimes2.map((item, index1) => (
+              <tr key={'row2'+index1}>
+                <td key={'Name1'+index1}>{item.theatre}</td>
+                <td key={'Time1'+index1}>{item.dateTime.slice(-5)}</td>
+              </tr>
+              )) }
+            </tbody>
+            <thead>
+              <tr>
+              <th>{this.state.data3.title}</th>
+              </tr>
+            </thead>
+            <tbody>
+              { showtimes3.map((item, index2) => (
+              <tr key={'row3'+index2}>
+                <td key={'Name1'+index2}>{item.theatre}</td>
+                <td key={'Time1'+index2}>{item.dateTime.slice(-5)}</td>
+              </tr>
+              )) }
+            </tbody>
+            <thead>
+              <tr>
+              <th>{this.state.data4.title}</th>
+              </tr>
+            </thead>
+            <tbody>
+              { showtimes4.map((item, index3) => (
+              <tr key={'row4'+index3}>
+                <td key={'Name1'+index3}>{item.theatre}</td>
+                <td key={'Time1'+index3}>{item.dateTime.slice(-5)}</td>
+              </tr>
+              )) }
+            </tbody>
+          </table>
         </div>
       </div>
     );
@@ -256,7 +352,7 @@ class Chat extends Component {
           {
          id: '6',
          options: [
-           { value: 1, label: 'Buy Movie Tickets', trigger: '7' },
+           { value: 1, label: 'Look up Movie Details', trigger: '7' },
            { value: 2, label: 'Look up movies near by', trigger: 'Near1' },
            { value: 3, label: 'Watch movie trailers', trigger: '6' },
          ],
@@ -265,7 +361,19 @@ class Chat extends Component {
        {
          id: 'Near1',
          component: <NearBy/>,
-         trigger: '6',
+         trigger: 'redirect-5-0',
+       },
+       {
+         id: 'redirect-5-0',
+         message: 'have you made your choice?',
+         trigger: 'redirect-5-1',
+       },
+       {
+       id: 'redirect-5-1',
+       options: [
+         { value: 1, label: 'Yes', trigger: '5' },
+         { value: 2, label: 'No', trigger: 'Near1' },
+       ],
        },
        {
          id: '7',
@@ -274,7 +382,7 @@ class Chat extends Component {
        },
        {
          id: '9',
-         message: 'Do you know what movie you want to buy tickets for?',
+         message: 'Do you know what movie you want to look up?',
          trigger: '10',
        },
        {
@@ -291,7 +399,7 @@ class Chat extends Component {
       },
       {
         id: '12',
-        message: 'What is the movie you want to buy ticket for?',
+        message: 'What is the movie you want to look up?',
         trigger: 'movieName',
       },
       {
