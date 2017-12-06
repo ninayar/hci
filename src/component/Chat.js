@@ -3,11 +3,9 @@ import ReactDOM from 'react-dom';
 import ChatBot,{ Loading } from 'react-simple-chatbot';
 import PropTypes from 'prop-types';
 import Summary from './Summary';
-import Trailer from './Trailer';
 import { Link } from 'react-router-dom'
 
 class Chat extends Component {
-
   render(){
     return (
 
@@ -128,24 +126,32 @@ class Chat extends Component {
         trigger: 'trailerName'
       },
       {
-
         id: 'trailerName',
         user: true,
-        trigger: '16'
+        trigger: '19'
+      },
+      {
+        id: '19',
+        component: <Summary />,
+        trigger:'21'
       },
       {
          id: '20',
          options: [
-           { value: 1, label: 'Yes', trigger: '21' },
+           { value: 1, label: 'Yes', trigger: '22' },
            { value: 2, label: 'No', trigger: '12' },
          ],
      },
      {
-       id: '21',
+       id : '21',
+       message: 'What else Can I do for you?',
+       trigger: '6'
+     },
+     {
+       id: '22',
        message: 'Lets call it a day for now.',
        end: true,
      },
-
       ]}
       />
 

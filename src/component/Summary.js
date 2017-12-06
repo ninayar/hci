@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Trailer from './Trailer.js';
-import YouTube from 'react-youtube';
 
 class Summary extends Component{
   constructor(props) {
@@ -9,6 +7,7 @@ class Summary extends Component{
     this.state = {
       movieName: '',
       customerName: '',
+      trailerName:'',
       zip: '',
       result: 'error',
       Title: 'error',
@@ -27,21 +26,30 @@ class Summary extends Component{
   }
 
   componentWillMount() {
+    var search='';
+    console.log('prosp....',this.props);
     const self=this;
-    const { steps } = this.props;
-    const { movieName,trailerName, customerName,zip } = steps;
-    const search = movieName.value;
+    const { steps, step } = this.props;
+    console.log('steps............',step);
+    const { movieName, trailerName, customerName,zip } = steps;
+    if (step.id === '13' || step.id === '16'){
+      search = movieName.value;
+    } else if (step.id === '19') {
+      search = trailerName.value;
+    }
     console.log(search);
     const url = `http://www.omdbapi.com/?apikey=cc75c508&t=${search}`;
     var xhttp = new XMLHttpRequest();
+    console.log('Search from url...............',url);
     xhttp.addEventListener("load",function() {
     if (xhttp.readyState == 4) {
       const data = JSON.parse(this.responseText);
       if (data.Response=="True") {
-      console.log(data.Poster);
+      console.log('Search from db...............',data);
       self.state.imdbId = data.imdbID;
         self.setState({
           movieName,
+          trailerName,
           customerName,
           zip,
           result: true,
@@ -56,14 +64,14 @@ class Summary extends Component{
         console.log("state &&&&&",self.state);
       }
       else{
-        self.setState({ movieName,customerName,zip,result: false,Title: 'Not Found',  Actors: 'Not Found',
+        self.setState({ movieName,trailerName,customerName,zip,result: false,Title: 'Not Found',  Actors: 'Not Found',
               Plot: 'Not Found',Poster: 'Not Found',Imdb: 'Not Found',Released: 'Not Found',imdbId:'Not Found'});
       }
     }
   });
     xhttp.open("GET", url, false);
     xhttp.send();
-    if(this.props.step.id === '16'){
+    if(this.props.step.id === '16' || this.props.step.id === '19'){
       var xhr = new XMLHttpRequest();
       xhr.withCredentials = false;
       var imdbKey = '';
@@ -138,15 +146,17 @@ class Summary extends Component{
                   </tbody>
                 </table>
           :
-            <p>No results.Try Again</p>
+            <p>No results, Try Again</p>
           }
         </div>
-      : this.props.step.id === '16' ?
-          <div>
-            {this.trailerJSX()}
-          </div>
-          :
-          null
+      : this.state.result ?
+                              this.props.step.id === '16' || this.props.step.id === '19' ?
+                              <div>
+                                {this.trailerJSX()}
+                              </div>
+                              :
+                              null
+                          : <p>No trailer found</p>
     }
     </div>
     );
@@ -155,10 +165,12 @@ class Summary extends Component{
 
 Summary.propTypes = {
   steps: PropTypes.object,
+  triggerNextStep: PropTypes.function
 };
 
 Summary.defaultProps = {
   steps: undefined,
+  triggerNextStep: undefined
 };
 
 export default Summary;
