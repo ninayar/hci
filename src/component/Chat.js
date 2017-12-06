@@ -2,170 +2,9 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ChatBot,{ Loading } from 'react-simple-chatbot';
 import PropTypes from 'prop-types';
+import Summary from './Summary';
+import Trailer from './Trailer';
 import { Link } from 'react-router-dom'
-
-class Summary extends Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-      movieName: '',
-      customerName: '',
-      zip: '',
-      result: 'error',
-      Title: 'error',
-      Actors: 'error',
-      Plot: 'error',
-      Poster: 'error',
-      Imdb: 'error',
-      Released: 'error'
-    };
-  }
-
-  componentWillMount() {
-    const self=this;
-    const { steps } = this.props;
-    const { movieName,customerName,zip } = steps;
-
-    const search = movieName.value;
-    console.log(search);
-    const url = `http://www.omdbapi.com/?apikey=cc75c508&t=${search}`;
-    console.log(url);
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (xhttp.readyState == 4) {
-      const data = JSON.parse(this.responseText);
-      console.log(data);
-      if (data.Response=="True") {
-        console.log(data.Poster);
-
-        self.setState({ movieName,customerName,zip,result: "True", Title: data.Title,  Actors: data.Actors,
-              Plot: data.Plot,Poster: data.Poster,Imdb: data.imdbRating,Released: data.Released});
-      }
-      else{
-        self.setState({ movieName,customerName,zip,result: 'Not Found',Title: 'Not Found',  Actors: 'Not Found',
-              Plot: 'Not Found',Poster: 'Not Found',Imdb: 'Not Found',Released: 'Not Found'});
-      }
-    }
-    };
-    xhttp.open("GET", url, true);
-    xhttp.send();
-  }
-
-  render(){
-    const {movieName,customerName,zip,result,Title,Actors,Plot,Poster,Imdb,Released} = this.state;
-    const PosterURL = {Poster};
-    console.log({PosterURL})
-
-    return(
-      <div>
-        <p> Details: <br/> {customerName.value} , {zip.value}</p>
-        <h4>Movie Deatils</h4>
-       { this.state.result ?
-
-        <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th className="span2">Items</th>
-            <th className="span2">Details</th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <th scope="row">Title</th>
-          <td>{Title}</td>
-        </tr>
-        <tr>
-          <th scope="row">Actors</th>
-          <td>{Actors}</td>
-        </tr>
-        <tr>
-          <th scope="row">Plot</th>
-          <td>{Plot}</td>
-        </tr>
-        <tr>
-          <th scope="row">Released</th>
-          <td>{Released}</td>
-        </tr>
-        <tr>
-          <th scope="row">Imdb Ratings</th>
-          <td>{Imdb}</td>
-        </tr>
-      </tbody>
-        </table>
-      :
-        <p>No results.Try Again</p>
-      }
-      </div>
-    );
-  }
-}
-
-Summary.propTypes = {
-  steps: PropTypes.object,
-};
-
-Summary.defaultProps = {
-  steps: undefined,
-};
-
-class NearBy extends Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-      zip: '',
-      showtimes: 'error'
-
-    };
-  }
-
-  componentWillMount() {
-    const self = this;
-    const { steps } = this.props;
-    const { zip } = steps;
-    const search = zip.value;
-    console.log(search);
-    const nearUrl =  `http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-12-03&api_key=bdyduv2xctgvynxd79b9jfu8&zip=${search}`;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (xhttp.readyState == 4) {
-      const data = this.responseText;
-      console.log(data);
-
-      if (data) {
-        console.log(data[0]);
-
-        self.setState({ zip, showtimes: 'set' });
-      }
-      else{
-        self.setState({ zip, showtimes: 'not set' });
-
-      }
-    }
-    };
-    xhttp.open("GET", nearUrl, true);
-    xhttp.send();
-  }
-
-  render(){
-    const {zip, showtimes} = this.state;
-    return(
-      <div style = {{width: '100%'}}>
-        <p> Details: {zip.value}</p>
-        <p> Details: {showtimes}</p>
-
-      </div>
-    );
-  }
-}
-
-NearBy.propTypes = {
-  steps: PropTypes.object,
-};
-
-NearBy.defaultProps = {
-  steps: undefined,
-};
-
 
 class Chat extends Component {
 
@@ -173,8 +12,8 @@ class Chat extends Component {
     return (
 
       <ChatBot
-      floating	= {true}
-      steps = {[
+        floating	= {true}
+        steps = {[
         {
           id: '0',
           message: 'Welcome to MovieTix!',
@@ -215,13 +54,13 @@ class Chat extends Component {
          options: [
            { value: 1, label: 'Buy Movie Tickets', trigger: '7' },
            { value: 2, label: 'Look up movies near by', trigger: 'Near1' },
-           { value: 3, label: 'Watch movie trailers', trigger: '6' },
+           { value: 3, label: 'Watch movie trailers', trigger: '18' },
          ],
        },
 
        {
          id: 'Near1',
-         component: <NearBy/>,
+         message:'ok',
          trigger: '6',
        },
        {
@@ -259,19 +98,47 @@ class Chat extends Component {
       {
         id: '13',
         component: <Summary />,
-        trigger: '19',
+        trigger: '14',
       },
       {
-        id: '19',
-        message: 'Is this what you wanted?',
+        id: '14',
+        message : 'Do you want to see the trailer?',
+        trigger: '15',
+      },
+      {
+        id:'15',
+        options: [
+          { value: 1, label: 'Yes', trigger: '16' },
+          { value: 2, label: 'No', trigger: '17' },
+        ]
+      },
+      {
+        id: '16',
+        component: <Summary />,
+        trigger: '17',
+      },
+      {
+        id: '17',
+        message: 'Cool, Is this the movie you were looking for?',
         trigger: '20',
       },
       {
-     id: '20',
-     options: [
-       { value: 1, label: 'Yes', trigger: '21' },
-       { value: 2, label: 'No', trigger: '12' },
-     ],
+        id:'18',
+        message: 'Please specify the Movie name',
+        trigger: 'trailerName'
+      },
+      {
+
+        id: 'trailerName',
+        user: true,
+        trigger: '16'
+      },
+      {
+         id: '20',
+         options: [
+           { value: 1, label: 'Yes', trigger: '21' },
+           { value: 2, label: 'No', trigger: '12' },
+         ],
      },
      {
        id: '21',
