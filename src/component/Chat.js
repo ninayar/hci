@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import ChatBot,{ Loading } from 'react-simple-chatbot';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
+import {fetchJsonp} from 'fetch-jsonp'
 
 class Summary extends Component{
   constructor(props) {
@@ -113,8 +114,12 @@ class NearBy extends Component{
     super(props);
     this.state = {
       zip: '',
-      showtimes: 'error'
-
+      length: 'error',
+      data0 : {title: 'error', showtimes: ['error']},
+      data1 : ['error'],
+      data2 : ['error'],
+      data3 : ['error'],
+      data4 : ['error'],
     };
   }
 
@@ -124,35 +129,73 @@ class NearBy extends Component{
     const { zip } = steps;
     const search = zip.value;
     console.log(search);
-    const nearUrl =  `http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-12-03&api_key=bdyduv2xctgvynxd79b9jfu8&zip=${search}`;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (xhttp.readyState == 4) {
-      const data = this.responseText;
-      console.log(data);
+    const nearUrl =  `http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-12-05&api_key=bdyduv2xctgvynxd79b9jfu8&zip=${search}`;
 
-      if (data) {
-        console.log(data[0]);
-
-        self.setState({ zip, showtimes: 'set' });
-      }
-      else{
-        self.setState({ zip, showtimes: 'not set' });
-
-      }
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+  if (xhttp.readyState == 4) {
+    const length =this.responseText.length;
+    console.log(length);
+    var indents = [];
+    for (var i = 0; i < 5; i++) {
+      indents.push(JSON.parse(this.responseText)[i]);
     }
-    };
-    xhttp.open("GET", nearUrl, true);
-    xhttp.send();
+    var data = indents ;
+
+    console.log(data[0].showtimes);
+
+    if (data) {
+      self.setState({ zip, length: length, data0: {title: data[0].title, showtimes: [data[0].showtimes]},
+        data1:data[1], data2: data[2], data3:data[3], data4:data[4] });
+    }
+    else{
+      self.setState({ zip, length: 'n/A' });
+
+    }
+  }
+  };
+  xhttp.open("GET", nearUrl);
+  xhttp.send();
   }
 
   render(){
-    const {zip, showtimes} = this.state;
-    return(
-      <div style = {{width: '100%'}}>
-        <p> Details: {zip.value}</p>
-        <p> Details: {showtimes}</p>
+    const {zip} = this.state;
+    console.log("in render");
+    var showtimes0=[];
+    for(var i=0; i<this.state.data0.showtimes.length;i++)
+    {
+      showtimes0.push(this.state.data0.showtimes[i]);
+    }
 
+    return(
+
+      <div style={{width: '100%'} }>
+        <p>
+          Details: {zip.value}</p>
+        <p>
+          Number of Movies : {length}</p>
+        <div>
+          <p>Theaters: The top 5 are shown</p>
+          <table classname="table table-bordered">
+            <tbody>
+              <tr>
+                <td>{this.state.data0.title}</td>
+              </tr>
+              <tr>
+              <td>
+              {
+
+                showtimes0.map((item) => (
+                  <td key={index}>[item]</td>
+              ))
+
+            }
+          </td>
+          </tr>
+        </tbody>
+      </table>
+
+        </div>
       </div>
     );
   }
