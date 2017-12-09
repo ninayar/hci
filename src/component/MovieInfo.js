@@ -1,6 +1,6 @@
 import React , { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Summary} from './Chat';
+import {Summary} from './chat';
 
 class MovieInfo extends Component {
   constructor(props) {

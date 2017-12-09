@@ -5,7 +5,7 @@ class Summary extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      movieName: '',
+      movieName: '' ,
       customerName: '',
       trailerName:'',
       zip: '',
@@ -88,9 +88,6 @@ class Summary extends Component{
           self.setState({
             ytId: youtubeQuery
           })
-          console.log('-----------------',imdbKey);
-
-          console.log('youtubeQuery.............',youtubeQuery);
         }
       });
       xhr.open("GET", url, false);
@@ -164,13 +161,11 @@ class Summary extends Component{
 }
 
 Summary.propTypes = {
-  steps: PropTypes.object,
-  triggerNextStep: PropTypes.function
+  steps: PropTypes.object
 };
 
 Summary.defaultProps = {
-  steps: undefined,
-  triggerNextStep: undefined
+  steps: undefined
 };
 
 export default Summary;
