@@ -2,112 +2,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ChatBot,{ Loading } from 'react-simple-chatbot';
 import PropTypes from 'prop-types';
-import {fetchJsonp} from 'fetch-jsonp'
-
-export class Summary extends Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-      movieName: props.movieName,
-      customerName: props.customerName,
-      zip: props.zip,
-      result: 'error',
-      Title: 'error',
-      Actors: 'error',
-      Plot: 'error',
-      Poster: 'error',
-      Imdb: 'error',
-      Released: 'error'
-    };
-  }
-
-  componentWillMount() {
-    const self=this;
-    var search = '';
-    const { steps } = this.props;
-    if(typeof(steps) != 'undefined'){
-      const { movieName,customerName,zip } = steps;
-      console.log("here")
-      search = movieName.value;
-    }
-    else{
-      console.log("no i am here")
-      search = this.state.movieName;
-      }
-    console.log(search);
-    const url = `http://www.omdbapi.com/?apikey=cc75c508&t=${search}`;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (xhttp.readyState == 4) {
-      const data = JSON.parse(this.responseText);
-      if (data.Response=="True") {
-        self.setState({result: "True", Title: data.Title,  Actors: data.Actors,
-              Plot: data.Plot,Poster: data.Poster,Imdb: data.imdbRating,Released: data.Released});
-      }
-      else{
-        self.setState({ result: 'Not Found',
-              Title: 'Not Found',  Actors: 'Not Found',
-              Plot: 'Not Found',Poster: 'Not Found',Imdb: 'Not Found',Released: 'Not Found'});
-      }
-    }
-    };
-    xhttp.open("GET", url, true);
-    xhttp.send();
-    this.setState(self);
-  }
-
-  render(){
-    const {movieName,customerName,zip,result,Title,Actors,Plot,Poster,Imdb,Released} = this.state;
-    return(
-      <div style={{width: '100%'} }>
-        <h4>Movie Deatils</h4>
-       { result=='True' ?
-
-        <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th className="span2">Items</th>
-            <th className="span2">Details</th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <th scope="row">Title</th>
-          <td>{Title}</td>
-        </tr>
-        <tr>
-          <th scope="row">Actors</th>
-          <td>{Actors}</td>
-        </tr>
-        <tr>
-          <th scope="row">Plot</th>
-          <td>{Plot}</td>
-        </tr>
-        <tr>
-          <th scope="row">Released</th>
-          <td>{Released}</td>
-        </tr>
-        <tr>
-          <th scope="row">Imdb Ratings</th>
-          <td>{Imdb}</td>
-        </tr>
-      </tbody>
-        </table>
-      :
-        <p>No results.Try Again</p>
-      }
-      </div>
-    );
-  }
-}
-
-Summary.propTypes = {
-  steps: PropTypes.object,
-};
-
-Summary.defaultProps = {
-  steps: undefined,
-};
+import Summary from './Summary';
+import {fetchJsonp} from 'fetch-jsonp';
 
 class NearBy extends Component{
   constructor(props) {
@@ -349,14 +245,14 @@ BuyTicket.defaultProps = {
   steps: undefined,
 };
 
-class Chat extends Component {
 
+class Chat extends Component {
   render(){
     return (
 
       <ChatBot
-      floating	= {true}
-      steps = {[
+        floating	= {true}
+        steps = {[
         {
           id: '0',
           message: 'Welcome to MovieTix!',
@@ -395,13 +291,12 @@ class Chat extends Component {
           {
          id: '6',
          options: [
-           { value: 1, label: 'Look up Movie Details', trigger: '7' },
+            { value: 1, label: 'Look up Movie Details', trigger: '7' },
            { value: 2, label: 'Look up movies near by', trigger: 'Near1' },
-           { value: 3, label: 'Watch movie trailers', trigger: '6' },
+           { value: 3, label: 'Watch movie trailers', trigger: '18' },
            { value: 4, label: 'Buy Tickets', trigger: '23' },
          ],
        },
-
        {
          id: 'Near1',
          component: <NearBy/>,
@@ -414,10 +309,10 @@ class Chat extends Component {
        },
        {
        id: 'redirect-5-1',
-       options: [
-         { value: 1, label: 'Yes', trigger: '5' },
-         { value: 2, label: 'No', trigger: 'Near1' },
-       ],
+         options: [
+           { value: 1, label: 'Yes', trigger: '5' },
+           { value: 2, label: 'No', trigger: 'Near1' },
+          ],
        },
        {
          id: '7',
@@ -426,7 +321,7 @@ class Chat extends Component {
        },
        {
          id: '9',
-         message: 'Do you know what movie you want to look up?',
+         message: 'Do you know what movie you want to  look up?',
          trigger: '10',
        },
        {
@@ -443,7 +338,7 @@ class Chat extends Component {
       },
       {
         id: '12',
-        message: 'What is the movie you want to look up?',
+        message: 'What is the movie you want to  look up??',
         trigger: 'movieName',
       },
       {
@@ -454,24 +349,61 @@ class Chat extends Component {
       {
         id: '13',
         component: <Summary />,
-        trigger: '19',
+        trigger: '14',
       },
       {
-        id: '19',
-        message: 'Is this what you wanted?',
+        id: '14',
+        message : 'Do you want to see the trailer?',
+        trigger: '15',
+      },
+      {
+        id:'15',
+        options: [
+          { value: 1, label: 'Yes', trigger: '16' },
+          { value: 2, label: 'No', trigger: '17' },
+        ]
+      },
+      {
+        id: '16',
+        component: <Summary />,
+        trigger: '17',
+      },
+      {
+        id: '17',
+        message: 'Cool, Is this the movie you were looking for?',
         trigger: '20',
       },
       {
-     id: '20',
-     options: [
-       { value: 1, label: 'Yes', trigger: '21' },
-       { value: 2, label: 'No', trigger: '12' },
-     ],
+        id:'18',
+        message: 'Please specify the Movie name',
+        trigger: 'trailerName'
+      },
+      {
+        id: 'trailerName',
+        user: true,
+        trigger: '19'
+      },
+      {
+        id: '19',
+        component: <Summary />,
+        trigger:'21'
+      },
+      {
+         id: '20',
+         options: [
+           { value: 1, label: 'Yes', trigger: '22' },
+           { value: 2, label: 'No', trigger: '12' },
+         ],
      },
      {
-       id: '21',
+       id : '21',
+       message: 'What else Can I do for you?',
+       trigger: '6'
+     },
+     {
+       id: '22',
        message: 'Lets go back to the menu options',
-       trigger: 6,
+       trigger: '6',
      },
      {
        id: '23',
@@ -481,7 +413,7 @@ class Chat extends Component {
      {
        id: 'info',
        message: 'First look up details of the movie you want to see and check the near by shows.',
-       trigger: 24,
+       trigger: '24',
      },
      {
        id: '24',
@@ -514,19 +446,19 @@ class Chat extends Component {
        trigger: '27',
      },
      {
-    id: '27',
-    options: [
-      { value: 1, label: 'Yes', trigger: '28' },
-      { value: 2, label: 'No', trigger: '6' },
-    ],
+      id: '27',
+      options: [
+        { value: 1, label: 'Yes', trigger: '28' },
+        { value: 2, label: 'No', trigger: '6' },
+        ],
     },
     {
       id: '28',
       message: 'Thats all folks. Signing out.',
       end: true,
-    },
-      ]}
-      />
+    }
+  ]}
+  />
 
     )
   }
