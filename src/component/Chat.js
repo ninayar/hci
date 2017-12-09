@@ -3,7 +3,248 @@ import ReactDOM from 'react-dom';
 import ChatBot,{ Loading } from 'react-simple-chatbot';
 import PropTypes from 'prop-types';
 import Summary from './Summary';
-import { Link } from 'react-router-dom'
+import {fetchJsonp} from 'fetch-jsonp';
+
+class NearBy extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      zip: '',
+      date: 'loading',
+      data0 : {title: 'loading', showtimes: { dateTime: 'loading', theatre: 'loading'}},
+      data1 : {title: 'loading', showtimes: { dateTime: 'loading', theatre: 'loading'}},
+      data2 : {title: 'loading', showtimes: { dateTime: 'loading', theatre: 'loading'}},
+      data3 : {title: 'loading', showtimes: { dateTime: 'loading', theatre: 'loading'}},
+      data4 : {title: 'loading', showtimes: { dateTime: 'loading', theatre: 'loading'}},
+
+    };
+  }
+
+  componentWillMount() {
+    const self = this;
+    const {
+      steps
+    } = this.props;
+    const {
+      zip
+    } = steps;
+    const search = zip.value;
+    console.log(search);
+    var utc = new Date().toJSON().slice(0, 10).replace(/-/g, '-');
+    const nearUrl = `http://data.tmsapi.com/v1.1/movies/showings?startDate=${utc}&api_key=bdyduv2xctgvynxd79b9jfu8&zip=${search}`;
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState == 4) {
+        const length = this.responseText.length;
+        var data = {}
+        var alldata = [];
+        for (var i = 0; i < 5; i++) {
+          data = JSON.parse(this.responseText)[i];
+          if (data) {
+            var showtimes = [];
+            for (var j = 0; j < data.showtimes.length; j++) {
+              showtimes.push({
+                dateTime: data.showtimes[j].dateTime,
+                theatre: data.showtimes[j].theatre.name
+              })
+            }
+            data = {
+              title: data.title,
+              showtimes: showtimes
+            }
+            alldata.push(data);
+          }
+
+        }
+        if (data) {
+          self.setState({
+            zip,
+            date: utc,
+            data0: alldata[0],
+            data1: alldata[1],
+            data2: alldata[2],
+            data3: alldata[3],
+            data4: alldata[4]
+          });
+        } else {
+          self.setState({
+            zip,
+            date: 'n/A'
+          });
+
+        }
+      }
+    };
+    xhttp.open("GET", nearUrl);
+    xhttp.send();
+  }
+
+  render(){
+    const {zip,date} = this.state;
+    var showtimes0=[];
+    for(var i=0; i<this.state.data0.showtimes.length;i++)
+    {
+      showtimes0.push(this.state.data0.showtimes[i]);
+    }
+    var showtimes1=[];
+    for(var i=0; i<this.state.data1.showtimes.length;i++)
+    {
+      showtimes1.push(this.state.data1.showtimes[i]);
+    }
+    var showtimes2=[];
+    for(var i=0; i<this.state.data2.showtimes.length;i++)
+    {
+      showtimes2.push(this.state.data2.showtimes[i]);
+    }
+    var showtimes3=[];
+    for(var i=0; i<this.state.data3.showtimes.length;i++)
+    {
+      showtimes3.push(this.state.data3.showtimes[i]);
+    }
+    var showtimes4=[];
+    for(var i=0; i<this.state.data4.showtimes.length;i++)
+    {
+      showtimes4.push(this.state.data4.showtimes[i]);
+    }
+    var i=0,index=0;
+    return(
+      <div style={{width: '100%'} }>
+        <p>
+          Details: {zip.value}</p>
+        <p>
+          Date : {date}</p>
+        <div>
+          <p>Theaters: The top 5 are shown</p>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+              <th>{this.state.data0.title}</th>
+              </tr>
+            </thead>
+            <tbody>
+              { showtimes0.map((item, i) => (
+              <tr key={'row0'+i}>
+                <td key={'Name0'+i}>{item.theatre}</td>
+                <td key={'Time0'+i}>{item.dateTime.slice(-5)}</td>
+              </tr>
+              )) }
+            </tbody>
+            <thead>
+              <tr>
+              <th>{this.state.data1.title}</th>
+              </tr>
+            </thead>
+            <tbody>
+              { showtimes1.map((item, index) => (
+              <tr key={'row1'+index}>
+                <td key={'Name1'+index}>{item.theatre}</td>
+                <td key={'Time1'+index}>{item.dateTime.slice(-5)}</td>
+              </tr>
+              )) }
+            </tbody>
+            <thead>
+              <tr>
+              <th>{this.state.data2.title}</th>
+              </tr>
+            </thead>
+            <tbody>
+              { showtimes2.map((item, index1) => (
+              <tr key={'row2'+index1}>
+                <td key={'Name1'+index1}>{item.theatre}</td>
+                <td key={'Time1'+index1}>{item.dateTime.slice(-5)}</td>
+              </tr>
+              )) }
+            </tbody>
+            <thead>
+              <tr>
+              <th>{this.state.data3.title}</th>
+              </tr>
+            </thead>
+            <tbody>
+              { showtimes3.map((item, index2) => (
+              <tr key={'row3'+index2}>
+                <td key={'Name1'+index2}>{item.theatre}</td>
+                <td key={'Time1'+index2}>{item.dateTime.slice(-5)}</td>
+              </tr>
+              )) }
+            </tbody>
+            <thead>
+              <tr>
+              <th>{this.state.data4.title}</th>
+              </tr>
+            </thead>
+            <tbody>
+              { showtimes4.map((item, index3) => (
+              <tr key={'row4'+index3}>
+                <td key={'Name1'+index3}>{item.theatre}</td>
+                <td key={'Time1'+index3}>{item.dateTime.slice(-5)}</td>
+              </tr>
+              )) }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  }
+}
+
+NearBy.propTypes = {
+  steps: PropTypes.object,
+};
+
+NearBy.defaultProps = {
+  steps: undefined,
+};
+class BuyTicket extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      movieTitle: '',
+      zip: '',
+      theatre: '',
+      customerName: '',
+      result: 'error',
+    };
+  }
+
+  componentWillMount() {
+    const self=this;
+    const { steps } = this.props;
+    const { movieTitle,zip,theatre,customerName } = steps;
+    this.setState({ movieTitle,zip,theatre,customerName });
+  }
+
+  render(){
+    const {movieTitle,zip,theatre,customerName} = this.state;
+    return(
+      <div>
+        <h4>Ticket Deatils</h4>
+        <p>Customer: {customerName.value}<br/>Zip: {zip.value}</p>
+        <p> Movie: {movieTitle.value} <br/> Theater: {theatre.value} </p>
+        <p>We wanted to help you buy it. But, no api is for free that supports this feature</p>
+
+        <p>Check out:</p>
+        <ul className="list-group">
+          <li className="list-group-item"><a href="https://www.moviefone.com/showtimes/"  target="_blank">MovieFone</a></li>
+          <li className="list-group-item"><a href="https://www.movietickets.com/"  target="_blank">MovieTieckets</a></li>
+          <li className="list-group-item"><a href="https://www.fandango.com/?cmp=KNC_SP_Google_Main_Gen-Top-Volume-Ticket-Keywords-ABM&refcd=43700025389633112_%7cpkw%7c%2Bbuy+%2Bmovie+%2Btickets_matchtypeb&gclid=CjwKCAiAx57RBRBkEiwA8yZdUGlTnqY-Zza1VrPsv3E9hL3Damu50tNACNRoTAwN1jFgi8faoXUKCxoC40wQAvD_BwE&gclsrc=aw.ds"
+           target="_blank">Fandago</a></li>
+          <li className="list-group-item"><a href="https://www.atomtickets.com/"  target="_blank">Atom</a></li>
+        </ul>
+    </div>
+    );
+  }
+}
+
+BuyTicket.propTypes = {
+  steps: PropTypes.object,
+};
+
+BuyTicket.defaultProps = {
+  steps: undefined,
+};
+
 
 class Chat extends Component {
   render(){
@@ -50,16 +291,28 @@ class Chat extends Component {
           {
          id: '6',
          options: [
-           { value: 1, label: 'Buy Movie Tickets', trigger: '7' },
+            { value: 1, label: 'Look up Movie Details', trigger: '7' },
            { value: 2, label: 'Look up movies near by', trigger: 'Near1' },
            { value: 3, label: 'Watch movie trailers', trigger: '18' },
+           { value: 4, label: 'Buy Tickets', trigger: '23' },
          ],
        },
-
        {
          id: 'Near1',
-         message:'ok',
-         trigger: '6',
+         component: <NearBy/>,
+         trigger: 'redirect-5-0',
+       },
+       {
+         id: 'redirect-5-0',
+         message: 'have you made your choice?',
+         trigger: 'redirect-5-1',
+       },
+       {
+       id: 'redirect-5-1',
+         options: [
+           { value: 1, label: 'Yes', trigger: '5' },
+           { value: 2, label: 'No', trigger: 'Near1' },
+          ],
        },
        {
          id: '7',
@@ -68,7 +321,7 @@ class Chat extends Component {
        },
        {
          id: '9',
-         message: 'Do you know what movie you want to buy tickets for?',
+         message: 'Do you know what movie you want to  look up?',
          trigger: '10',
        },
        {
@@ -85,7 +338,7 @@ class Chat extends Component {
       },
       {
         id: '12',
-        message: 'What is the movie you want to buy ticket for?',
+        message: 'What is the movie you want to  look up??',
         trigger: 'movieName',
       },
       {
@@ -149,11 +402,63 @@ class Chat extends Component {
      },
      {
        id: '22',
-       message: 'Lets call it a day for now.',
-       end: true,
+       message: 'Lets go back to the menu options',
+       trigger: '6',
      },
-      ]}
-      />
+     {
+       id: '23',
+       message: 'Lets help buy you those tickets.',
+       trigger: 'info',
+     },
+     {
+       id: 'info',
+       message: 'First look up details of the movie you want to see and check the near by shows.',
+       trigger: '24',
+     },
+     {
+       id: '24',
+       message: 'What is the movie you want to look up?',
+       trigger: 'movieTitle',
+     },
+     {
+       id: 'movieTitle',
+       user: true,
+       trigger: 'theatre-question',
+     },
+     {
+       id: 'theatre-question',
+       message: 'What is the theater you want to buy the ticket in?',
+       trigger: 'theatre',
+     },
+     {
+       id: 'theatre',
+       user: true,
+       trigger: '25',
+     },
+     {
+       id: '25',
+       component: <BuyTicket />,
+       trigger: '26',
+     },
+     {
+       id: '26',
+       message: 'Is this what you wanted?',
+       trigger: '27',
+     },
+     {
+      id: '27',
+      options: [
+        { value: 1, label: 'Yes', trigger: '28' },
+        { value: 2, label: 'No', trigger: '6' },
+        ],
+    },
+    {
+      id: '28',
+      message: 'Thats all folks. Signing out.',
+      end: true,
+    }
+  ]}
+  />
 
     )
   }
