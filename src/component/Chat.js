@@ -440,8 +440,8 @@ class Chat extends Component {
       },
       {
         id: '11',
-        message: 'Not supported yet!! :(',
-        trigger: '9',
+        message: 'Lets go back to the options so that you can decide.',
+        trigger: '6',
       },
       {
         id: '12',
