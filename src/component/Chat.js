@@ -61,7 +61,7 @@ export class Summary extends Component{
     const {movieName,customerName,zip,result,Title,Actors,Plot,Poster,Imdb,Released} = this.state;
     return(
       <div style={{width: '100%'} }>
-        <h4>Movie Deatils</h4>
+        <h4>Movie Details</h4>
        { result=='True' ?
 
         <table className="table table-bordered">
@@ -326,7 +326,7 @@ class BuyTicket extends Component{
     const {movieTitle,zip,theatre,customerName} = this.state;
     return(
       <div>
-        <h4>Ticket Deatils</h4>
+        <h4>Ticket Details</h4>
         <p>Customer: {customerName.value}<br/>Zip: {zip.value}</p>
         <p> Movie: {movieTitle.value} <br/> Theater: {theatre.value} </p>
         <p>We wanted to help you buy it. But, no api is for free that supports this feature</p>
