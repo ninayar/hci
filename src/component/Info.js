@@ -28,7 +28,7 @@ toggle() {
               <figcaption className="figure-caption text-center lead">{movieListInner.Name}</figcaption>
               </figure>
               <Collapse isOpen={this.state.collapse}>
-              <MovieInfo movieName={movieListInner.Name} customerName='guest' zip='11201'/>
+                <MovieInfo movieName={movieListInner.Name} customerName='guest' zip='11201'/>
               </Collapse>
             </CardBody>
           </Card>

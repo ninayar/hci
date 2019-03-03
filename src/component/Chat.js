@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ChatBot,{ Loading } from 'react-simple-chatbot';
 import PropTypes from 'prop-types';
-import {fetchJsonp} from 'fetch-jsonp'
+import Trailer from './Trailer';
+import {fetchJsonp} from 'fetch-jsonp';
 
 export class Summary extends Component{
   constructor(props) {
@@ -60,7 +61,7 @@ export class Summary extends Component{
     const {movieName,customerName,zip,result,Title,Actors,Plot,Poster,Imdb,Released} = this.state;
     return(
       <div style={{width: '100%'} }>
-        <h4>Movie Deatils</h4>
+        <h4>Movie Details</h4>
        { result=='True' ?
 
         <table className="table table-bordered">
@@ -108,6 +109,7 @@ Summary.propTypes = {
 Summary.defaultProps = {
   steps: undefined,
 };
+
 
 class NearBy extends Component{
   constructor(props) {
@@ -300,6 +302,7 @@ NearBy.propTypes = {
 NearBy.defaultProps = {
   steps: undefined,
 };
+
 class BuyTicket extends Component{
   constructor(props) {
     super(props);
@@ -323,7 +326,7 @@ class BuyTicket extends Component{
     const {movieTitle,zip,theatre,customerName} = this.state;
     return(
       <div>
-        <h4>Ticket Deatils</h4>
+        <h4>Ticket Details</h4>
         <p>Customer: {customerName.value}<br/>Zip: {zip.value}</p>
         <p> Movie: {movieTitle.value} <br/> Theater: {theatre.value} </p>
         <p>We wanted to help you buy it. But, no api is for free that supports this feature</p>
@@ -349,14 +352,14 @@ BuyTicket.defaultProps = {
   steps: undefined,
 };
 
-class Chat extends Component {
 
+class Chat extends Component {
   render(){
     return (
 
       <ChatBot
-      floating	= {true}
-      steps = {[
+        floating	= {true}
+        steps = {[
         {
           id: '0',
           message: 'Welcome to MovieTix!',
@@ -397,11 +400,10 @@ class Chat extends Component {
          options: [
            { value: 1, label: 'Look up Movie Details', trigger: '7' },
            { value: 2, label: 'Look up movies near by', trigger: 'Near1' },
-           { value: 3, label: 'Watch movie trailers', trigger: '6' },
+           { value: 3, label: 'Watch movie trailers', trigger: '18' },
            { value: 4, label: 'Buy Tickets', trigger: '23' },
          ],
        },
-
        {
          id: 'Near1',
          component: <NearBy/>,
@@ -414,10 +416,10 @@ class Chat extends Component {
        },
        {
        id: 'redirect-5-1',
-       options: [
-         { value: 1, label: 'Yes', trigger: '5' },
-         { value: 2, label: 'No', trigger: 'Near1' },
-       ],
+         options: [
+           { value: 1, label: 'Yes', trigger: '5' },
+           { value: 2, label: 'No', trigger: 'Near1' },
+          ],
        },
        {
          id: '7',
@@ -426,7 +428,7 @@ class Chat extends Component {
        },
        {
          id: '9',
-         message: 'Do you know what movie you want to look up?',
+         message: 'Do you know what movie you want to  look up?',
          trigger: '10',
        },
        {
@@ -438,12 +440,12 @@ class Chat extends Component {
       },
       {
         id: '11',
-        message: 'Not supported yet!! :(',
-        trigger: '9',
+        message: 'Lets go back to the options so that you can decide.',
+        trigger: '6',
       },
       {
         id: '12',
-        message: 'What is the movie you want to look up?',
+        message: 'What is the movie you want to look up??',
         trigger: 'movieName',
       },
       {
@@ -454,24 +456,44 @@ class Chat extends Component {
       {
         id: '13',
         component: <Summary />,
-        trigger: '19',
+        trigger: '17',
       },
       {
-        id: '19',
-        message: 'Is this what you wanted?',
+        id: '17',
+        message: 'Is this the movie you were looking for?',
         trigger: '20',
       },
       {
-     id: '20',
-     options: [
-       { value: 1, label: 'Yes', trigger: '21' },
-       { value: 2, label: 'No', trigger: '12' },
-     ],
+        id:'18',
+        message: 'Please specify the Movie name',
+        trigger: 'trailerName'
+      },
+      {
+        id: 'trailerName',
+        user: true,
+        trigger: '19'
+      },
+      {
+        id: '19',
+        component: <Trailer />,
+        trigger:'21'
+      },
+      {
+         id: '20',
+         options: [
+           { value: 1, label: 'Yes', trigger: '22' },
+           { value: 2, label: 'No', trigger: '12' },
+         ],
      },
      {
-       id: '21',
+       id : '21',
+       message: 'What else Can I do for you?',
+       trigger: '6'
+     },
+     {
+       id: '22',
        message: 'Lets go back to the menu options',
-       trigger: 6,
+       trigger: '6',
      },
      {
        id: '23',
@@ -481,7 +503,7 @@ class Chat extends Component {
      {
        id: 'info',
        message: 'First look up details of the movie you want to see and check the near by shows.',
-       trigger: 24,
+       trigger: '24',
      },
      {
        id: '24',
@@ -514,22 +536,20 @@ class Chat extends Component {
        trigger: '27',
      },
      {
-    id: '27',
-    options: [
-      { value: 1, label: 'Yes', trigger: '28' },
-      { value: 2, label: 'No', trigger: '6' },
-    ],
+      id: '27',
+      options: [
+        { value: 1, label: 'Yes', trigger: '28' },
+        { value: 2, label: 'No', trigger: '6' },
+        ],
     },
     {
       id: '28',
       message: 'Thats all folks. Signing out.',
       end: true,
-    },
-      ]}
-      />
-
-    )
-  }
-
+    }
+  ]}
+  />
+  )
+}
 }
 export default Chat;
